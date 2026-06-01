@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{title}}</title>
+    <link href="https://unpkg.com/mvp.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+    <h1>지역 검색</h1>
+</header>
+
+<center>
+    <form id="search_form" action="/search">
+        <input
+            type="text"
+            placeholder="keyword"
+            id="search_input"
+            name="q"
+        >
+        <button>검색</button>
+    </form>
+</center>
+
+<main>
+    {% if areas %}
+        <center>
+            <h3>{{areas|length}}개 데이터 수집...</h3>
+        </center>
+        <section>
+            {% for area in areas %}
+            <div>
+                <img src="{{area.image}}" width="150px" height="150px">
+                <p>
+                    {% if area.publisher | length >10 %}
+                    {{area.publisher[:10]}}...
+                    {% else %} {{area.publisher}} {% endif %}
+                </p>
+                <p>
+                    {{area.name}}
+                </p>
+
+                <form action="/favorites" method="post" class="isFav">
+                    <input type="hidden" name="keyword" value="{{area.keyword}}">
+                    <input type="hidden" name="publisher" value="{{area.publisher}}">
+                    <input type="hidden" name="name" value="{{area.name}}">
+                    <input type="hidden" name="image" value="{{book.image}}">
+                    <input type="hidden" name="next_url" value="{{next_url}}">
+                    <button type="submit" class="heart_button" title="즐겨찾기">
+                        {% if area.is_favorite %}
+                        ♥
+                        {% else %} 
+                        ♡
+                        {% endif %} 
+                    </button>
+            </div>
+            {% endfor %}
+        </section>
+        
+        {% else %}
+        <center>
+            <h3>{{areas|length}}개 데이터 수집...</h3>
+        </center>
+        {% endif %}
+</main>
+</body>
+</html>
