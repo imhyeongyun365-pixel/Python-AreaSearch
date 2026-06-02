@@ -30,21 +30,26 @@
         <section>
             {% for area in areas %}
             <div>
-                <img src="{{area.image}}" width="150px" height="150px">
+                
                 <p>
-                    {% if area.publisher | length >10 %}
-                    {{area.publisher[:10]}}...
-                    {% else %} {{area.publisher}} {% endif %}
+                    {% if area.title | length >10 %}
+                    {{area.title[:10]}}...
+                    {% else %} {{area.title}} {% endif %}
                 </p>
                 <p>
                     {{area.name}}
                 </p>
 
                 <form action="/favorites" method="post" class="isFav">
-                    <input type="hidden" name="keyword" value="{{area.keyword}}">
-                    <input type="hidden" name="publisher" value="{{area.publisher}}">
-                    <input type="hidden" name="name" value="{{area.name}}">
-                    <input type="hidden" name="image" value="{{book.image}}">
+                    <input type="hidden" name="title" value="{{area.title | striptags}}">
+                    <input type="hidden" name="link" value="{{area.link}}">
+                    <input type="hidden" name="category" value="{{area.category}}">
+                    <input type="hidden" name="description" value="{{area.description}}">
+                    <input type="hidden" name="telephone" value="{{area.telephone}}">
+                    <input type="hidden" name="address" value="{{area.address}}">
+                    <input type="hidden" name="roadAddress" value="{{area.roadAddress}}">
+                    <input type="hidden" name="mapx" value="{{area.mapx}}">
+                    <input type="hidden" name="mapy" value="{{area.mapy}}">
                     <input type="hidden" name="next_url" value="{{next_url}}">
                     <button type="submit" class="heart_button" title="즐겨찾기">
                         {% if area.is_favorite %}
