@@ -24,49 +24,79 @@
 
 <main>
     {% if areas %}
-        <center>
-            <h3>{{areas|length}}개 데이터 수집...</h3>
-        </center>
-        <section>
-            {% for area in areas %}
-            <div>
-                
-                <p>
-                    {% if area.title | length >10 %}
-                    {{area.title[:10]}}...
-                    {% else %} {{area.title}} {% endif %}
-                </p>
-                <p>
-                    {{area.name}}
-                </p>
+        <h3 class="result-count">{{ areas|length }}개 데이터 수집...</h3>
 
-                <form action="/favorites" method="post" class="isFav">
-                    <input type="hidden" name="title" value="{{area.title | striptags}}">
-                    <input type="hidden" name="link" value="{{area.link}}">
-                    <input type="hidden" name="category" value="{{area.category}}">
-                    <input type="hidden" name="description" value="{{area.description}}">
-                    <input type="hidden" name="telephone" value="{{area.telephone}}">
-                    <input type="hidden" name="address" value="{{area.address}}">
-                    <input type="hidden" name="roadAddress" value="{{area.roadAddress}}">
-                    <input type="hidden" name="mapx" value="{{area.mapx}}">
-                    <input type="hidden" name="mapy" value="{{area.mapy}}">
-                    <input type="hidden" name="next_url" value="{{next_url}}">
-                    <button type="submit" class="heart_button" title="즐겨찾기">
-                        {% if area.is_favorite %}
-                        ♥
-                        {% else %} 
-                        ♡
-                        {% endif %} 
-                    </button>
+        <div class="area-list">
+            {% for area in areas %}
+            <div class="area-card">
+
+                <div class="area-card-top">
+                    <div>
+                        <h3 class="area-title">
+                            {% if area.title | length > 20 %}
+                                {{ area.title[:20] }}...
+                            {% else %}
+                                {{ area.title }}
+                            {% endif %}
+                        </h3>
+
+                        <p class="area-category">{{ area.category }}</p>
+                    </div>
+
+                    <form action="/favorites" method="post" class="isFav">
+                        <input type="hidden" name="keyword" value="{{ keyword }}">
+                        <input type="hidden" name="title" value="{{ area.title | striptags }}">
+                        <input type="hidden" name="link" value="{{ area.link }}">
+                        <input type="hidden" name="category" value="{{ area.category }}">
+                        <input type="hidden" name="description" value="{{ area.description }}">
+                        <input type="hidden" name="telephone" value="{{ area.telephone }}">
+                        <input type="hidden" name="address" value="{{ area.address }}">
+                        <input type="hidden" name="roadAddress" value="{{ area.roadAddress }}">
+                        <input type="hidden" name="mapx" value="{{ area.mapx }}">
+                        <input type="hidden" name="mapy" value="{{ area.mapy }}">
+                        <input type="hidden" name="next_url" value="{{ next_url }}">
+
+                        <button type="submit" class="heart_button" title="즐겨찾기">
+                            {% if area.is_favorite %}
+                                ♥
+                            {% else %}
+                                ♡
+                            {% endif %}
+                        </button>
+                    </form>
+                </div>
+
+                {% if area.description %}
+                <p class="area-description">{{ area.description }}</p>
+                {% endif %}
+
+                <div class="area-info">
+                    {% if area.address %}
+                    <p><strong>주소</strong> {{ area.address }}</p>
+                    {% endif %}
+
+                    {% if area.roadAddress %}
+                    <p><strong>도로명</strong> {{ area.roadAddress }}</p>
+                    {% endif %}
+
+                    {% if area.telephone %}
+                    <p><strong>전화번호</strong> {{ area.telephone }}</p>
+                    {% endif %}
+                </div>
+
+                {% if area.link %}
+                <a class="area-link" href="{{ area.link }}" target="_blank">
+                    자세히 보기
+                </a>
+                {% endif %}
+
             </div>
             {% endfor %}
-        </section>
-        
-        {% else %}
-        <center>
-            <h3>{{areas|length}}개 데이터 수집...</h3>
-        </center>
-        {% endif %}
+        </div>
+
+    {% else %}
+        <h3 class="result-count">0개 데이터 수집...</h3>
+    {% endif %}
 </main>
 </body>
 </html>

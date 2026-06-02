@@ -43,28 +43,40 @@ async def read_item(request:Request,q:str):
         AreaModel.is_favorite==True
         )
 
-    
-    favorite_titles =[area.title for area in favorite_areas]
+    favorite_titles = [clean_html(area.title) for area in favorite_areas]
 
     area_models=[]
 
     for area in areas:
+        clean_title = clean_html(area.get("title", ""))
+        clean_category = clean_html(area.get("category", ""))
+        clean_description = clean_html(area.get("description", ""))
+        clean_address = clean_html(area.get("address", ""))
+        clean_road_address = clean_html(area.get("roadAddress", ""))
+
+    for area in areas:
         print(area)
+
+        clean_title = clean_html(area.get("title", ""))
+        
         area_model=AreaModel(
             keyword=keyword,
-            title=area.get("title", ""),
+            title=clean_html(area.get("title", "")),
             link=area.get("link", ""),
-            category=area.get("category", ""),
-            description=area.get("description", ""),
+            category=clean_category,
+            description=clean_description,
             telephone=area.get("telephone", ""),
-            address=area.get("address", ""),
-            roadAddress=area.get("roadAddress", ""),
+            address=clean_address,
+            roadAddress=clean_road_address,
             mapx=area.get("mapx", ""),
             mapy=area.get("mapy", "")
         )
 
         if area_model.title in favorite_titles:
            area_model.is_favorite=True
+
+        if clean_title in favorite_titles:
+           area_model.is_favorite = True
 
         area_models.append(area_model)
 
